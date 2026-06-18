@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Questionário de Diagnóstico BIM — TIC TRENS | CSBIM</title>
+<!-- Arquivo pronto para GitHub Pages. Renomeie para index.html e configure a SUPABASE_URL no bloco de configuração do script. -->
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
@@ -1144,8 +1145,8 @@
    Use SOMENTE a Project URL e a publishable key / anon public key.
    NUNCA use sb_secret_ neste arquivo.
    ========================================================= */
-const SUPABASE_URL = 'COLE_AQUI_A_PROJECT_URL_DO_SUPABASE';
-const SUPABASE_KEY = 'COLE_AQUI_A_PUBLISHABLE_KEY_DO_SUPABASE';
+const SUPABASE_URL = 'https://onjnbzhlutooeszmsdha.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_RuBR6Bn97nNHWv70U32Xww_f02V7WfX';
 
 const supabaseClient = (SUPABASE_URL.startsWith('http') && SUPABASE_KEY.startsWith('sb_'))
   ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -1226,7 +1227,7 @@ function openAdminLogin() {
 
 async function salvarNoBanco() {
   if (!supabaseConfigurado()) {
-    alert('Supabase ainda não está configurado. Edite o HTML e preencha SUPABASE_URL e SUPABASE_KEY antes de publicar no GitHub.');
+    alert('Supabase ainda não está configurado. Abra o index.html e preencha a SUPABASE_URL com a Project URL do Supabase. A publishable key já está configurada.');
     return false;
   }
 
@@ -1256,7 +1257,7 @@ async function salvarNoBanco() {
 
   if (error) {
     console.error(error);
-    alert('Não foi possível salvar as respostas no banco. Verifique o Supabase, as policies/RLS e a conexão.');
+    alert('Não foi possível salvar as respostas no banco. Verifique a Project URL, as policies/RLS e a conexão. Detalhe: ' + (error.message || 'erro desconhecido'));
     return false;
   }
 
@@ -1270,7 +1271,7 @@ async function loginAdmin() {
   document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('visible'));
 
   if (!supabaseConfigurado()) {
-    byId('adminLoginError').textContent = 'Supabase ainda não configurado. Preencha SUPABASE_URL e SUPABASE_KEY no HTML.';
+    byId('adminLoginError').textContent = 'Supabase ainda não configurado. Preencha a SUPABASE_URL no HTML. A publishable key já está configurada.';
     byId('adminLoginError').classList.add('visible');
     return;
   }
@@ -1486,7 +1487,7 @@ async function salvarAnaliseAdmin() {
 
   if (error) {
     console.error(error);
-    alert('Erro ao salvar análise.');
+    alert('Erro ao salvar análise. Detalhe: ' + (error.message || 'erro desconhecido'));
     return;
   }
 

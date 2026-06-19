@@ -762,6 +762,284 @@
     color:var(--text);
   }
 
+
+  /* === Resultados e análise === */
+  .analysis-shell {
+    max-width:980px;
+    margin:0 auto;
+  }
+  .analysis-brandbar {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--accent);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .analysis-brandbar .sep {
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    background:var(--border);
+  }
+  .analysis-lede {
+    max-width:680px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7;
+    margin-top:6px;
+  }
+  .analysis-summary {
+    background:linear-gradient(135deg, rgba(0,180,216,.10), rgba(28,35,48,.94));
+    border:1px solid rgba(0,180,216,.25);
+    border-radius:var(--radius);
+    padding:24px;
+    margin:24px 0 18px;
+  }
+  .analysis-summary-top {
+    display:flex;
+    justify-content:space-between;
+    gap:22px;
+    flex-wrap:wrap;
+    align-items:flex-start;
+  }
+  .risk-index {
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+  }
+  .risk-num {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:42px;
+    line-height:1;
+    font-weight:800;
+    color:var(--accent);
+  }
+  .risk-den {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:18px;
+    color:var(--muted);
+    padding-bottom:6px;
+  }
+  .risk-label {
+    display:block;
+    font-size:11px;
+    color:var(--muted);
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    margin-top:8px;
+  }
+  .risk-tag {
+    display:inline-flex;
+    margin-top:6px;
+    border:1px solid rgba(0,180,216,.25);
+    border-radius:999px;
+    padding:5px 9px;
+    color:var(--accent);
+    font-size:11px;
+    font-weight:800;
+  }
+  .analysis-stats {
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .analysis-stat .v {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:20px;
+    font-weight:800;
+    color:var(--text);
+  }
+  .analysis-stat .v.crit { color:#ff5c7a; }
+  .analysis-stat .k {
+    font-size:10px;
+    color:var(--muted);
+    font-weight:800;
+    letter-spacing:1.3px;
+    text-transform:uppercase;
+    margin-top:4px;
+  }
+  .rank-title {
+    margin-top:22px;
+    color:var(--muted);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .rank-title::after {
+    content:'';
+    height:1px;
+    background:var(--border);
+    flex:1;
+  }
+  .risk-rank {
+    margin-top:12px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .rank-row {
+    display:grid;
+    grid-template-columns:28px minmax(180px, 1fr) minmax(180px, 2fr) 76px;
+    gap:10px;
+    align-items:center;
+    font-size:13px;
+  }
+  .rank-pos { color:var(--muted); font-weight:800; text-align:right; }
+  .rank-name { font-weight:800; color:var(--text); }
+  .risk-track {
+    height:7px;
+    background:#0b1a22;
+    border:1px solid var(--border);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .risk-fill {
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    transition:width .35s ease;
+  }
+  .risk-fill.warn { background:#d29922; }
+  .risk-fill.crit { background:#ff5c7a; }
+  .rank-pct { color:var(--muted); font-size:12px; text-align:right; }
+  .analysis-toolbar {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .analysis-grid {
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .direction-card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+  }
+  .direction-card h4 {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:15px;
+    margin-bottom:7px;
+  }
+  .direction-card p {
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.6;
+  }
+  .pillar-analysis {
+    background:rgba(28,35,48,.96);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    margin-bottom:14px;
+    overflow:hidden;
+  }
+  .pillar-analysis-head {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:16px 18px;
+    cursor:pointer;
+  }
+  .pillar-analysis-code {
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;
+    font-size:11px;
+    font-weight:800;
+  }
+  .pillar-analysis-title { flex:1; }
+  .pillar-analysis-title h3 {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:15px;
+    margin-bottom:3px;
+  }
+  .pillar-analysis-title p {
+    font-size:11px;
+    color:var(--muted);
+  }
+  .pillar-meta-analysis {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    font-size:12px;
+  }
+  .pillar-analysis-body {
+    padding:0 18px 16px;
+  }
+  .analysis-item {
+    display:grid;
+    grid-template-columns:5px 1fr auto;
+    gap:12px;
+    padding:13px 0;
+    border-top:1px solid var(--border);
+    align-items:start;
+  }
+  .sev-stripe {
+    width:5px;
+    border-radius:6px;
+    align-self:stretch;
+    background:var(--border);
+  }
+  .analysis-item[data-sev="ok"] .sev-stripe { background:#2dd4a7; }
+  .analysis-item[data-sev="warn"] .sev-stripe { background:#d29922; }
+  .analysis-item[data-sev="crit"] .sev-stripe { background:#ff5c7a; }
+  .analysis-item[data-sev="na"] .sev-stripe { background:#5b7689; }
+  .analysis-item h4 {
+    font-size:13px;
+    margin-bottom:4px;
+  }
+  .analysis-item p {
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.55;
+  }
+  .sev-pill {
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:5px 8px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .sev-pill.ok { color:#9df0da; border-color:#2dd4a7; background:rgba(45,212,167,.12); }
+  .sev-pill.warn { color:#fbd79a; border-color:#d29922; background:rgba(210,153,34,.12); }
+  .sev-pill.crit { color:#ffb3c0; border-color:#ff5c7a; background:rgba(255,92,122,.12); }
+  .sev-pill.na { color:#b8c5ce; border-color:#5b7689; background:rgba(91,118,137,.12); }
+  .analysis-problems-only .analysis-item[data-sev="ok"],
+  .analysis-problems-only .analysis-item[data-sev="na"] {
+    display:none;
+  }
+  @media(max-width:760px){
+    .analysis-grid{ grid-template-columns:1fr; }
+    .rank-row{ grid-template-columns:26px 1fr 80px; }
+    .risk-track{ display:none; }
+    .analysis-item{ grid-template-columns:5px 1fr; }
+    .sev-pill{ grid-column:2; justify-self:start; }
+  }
+
   @media(max-width:720px) {
     .header { padding:16px 20px; align-items:flex-start; flex-direction:column; }
     .header-pill { white-space:normal; }
@@ -1136,6 +1414,7 @@
           <option value="Concluído">Concluído</option>
         </select>
         <button class="btn btn-primary" onclick="carregarRespostas()">Atualizar</button>
+        <button class="btn btn-primary" onclick="abrirResultadosAnalise()">Resultados e análise</button>
         <button class="btn btn-ghost" onclick="exportarCSV()">Exportar CSV</button>
         <button class="btn btn-ghost" onclick="logoutAdmin()">Sair</button>
       </div>
@@ -1143,6 +1422,49 @@
       <div id="adminResumo" class="callout">Carregando respostas...</div>
       <div id="adminLista" class="admin-list"></div>
       <div id="adminDetalhe" class="admin-detail" style="display:none;"></div>
+
+    </section>
+
+    <section class="screen" id="screenAnaliseDashboard">
+      <div class="analysis-shell" id="analysisShell">
+        <div class="analysis-brandbar">
+          <b>CSBIM</b><span class="sep"></span><span>Diagnóstico de Governança BIM</span><span class="sep"></span><span>TIC TRENS</span>
+        </div>
+        <div class="section-label">Etapa 01 · Mapeamento AS-IS</div>
+        <h2 class="section-title">Onde a governança mais dói</h2>
+        <p class="analysis-lede">Dashboard automático com base nas respostas cadastradas. O índice de risco, o ranking e os direcionamentos se reorganizam conforme os dados coletados dos entrevistados.</p>
+
+        <section class="analysis-summary" aria-label="Resumo do diagnóstico">
+          <div class="analysis-summary-top">
+            <div>
+              <div class="risk-index">
+                <span class="risk-num" id="riskIndexNum">0</span><span class="risk-den">/100</span>
+              </div>
+              <span class="risk-label">Índice de risco</span>
+              <span class="risk-tag" id="riskIndexTag">Aguardando dados</span>
+            </div>
+            <div class="analysis-stats">
+              <div class="analysis-stat"><div class="v" id="riskStatDone">0/0</div><div class="k">Itens avaliados</div></div>
+              <div class="analysis-stat"><div class="v crit" id="riskStatCrit">0</div><div class="k">Críticos</div></div>
+              <div class="analysis-stat"><div class="v" id="riskStatWarn">0</div><div class="k">Atenção</div></div>
+              <div class="analysis-stat"><div class="v" id="riskStatPeople">0</div><div class="k">Entrevistados</div></div>
+            </div>
+          </div>
+          <div class="rank-title">Concentração de problemas por eixo</div>
+          <div class="risk-rank" id="riskRank"></div>
+        </section>
+
+        <div class="analysis-toolbar">
+          <button class="btn btn-primary" onclick="gerarResultadosAnalise()">Atualizar análise</button>
+          <button class="btn btn-ghost" onclick="toggleSomenteProblemas()" id="btnSomenteProblemas">▣ Só problemas</button>
+          <button class="btn btn-ghost" onclick="copiarResumoAnalise()">Copiar resumo</button>
+          <button class="btn btn-ghost" onclick="window.print()">Imprimir / PDF</button>
+          <button class="btn btn-ghost" onclick="abrirTela('screenAdminDashboard')">← Voltar ao painel</button>
+        </div>
+
+        <div class="analysis-grid" id="analysisDirections"></div>
+        <main id="analysisPillars"></main>
+      </div>
     </section>
 
   </main>
@@ -1566,6 +1888,217 @@ function baixarWordAdmin(id) {
   a.click();
   a.remove();
   URL.revokeObjectURL(a.href);
+}
+
+
+const ANALISE_EIXOS = [
+  { id:'arquivos', code:'01', name:'Arquivos', sub:'Nomenclatura, versão, status, duplicidade e saúde dos modelos.', match:['arquivo','padrões','templates','nomenclatura','versionamento','audit','purge'], direcao:'Padronizar nomenclatura, revisar versionamento, eliminar duplicidades e criar checklist de saúde dos modelos antes de cada compartilhamento.' },
+  { id:'matriz', code:'02', name:'Matriz de Informação (LOD/LOI)', sub:'Cobertura por disciplina, fase, responsável e aderência aos requisitos.', match:['matriz','lod','loi','informação'], direcao:'Consolidar matriz LOD/LOI por fase e disciplina, com responsáveis claros e rastreabilidade entre requisito, modelo e entrega.' },
+  { id:'cde', code:'03', name:'Estados de Informação / Pastas (CDE)', sub:'Organização do ACC/CDE, WIP, Compartilhado, Publicado e Arquivado.', match:['cde','acc','pastas','estrutura de pastas','estados de informação'], direcao:'Reorganizar o CDE por estados de informação, com permissões, gates de aprovação e regra clara para publicação e arquivamento.' },
+  { id:'bep', code:'04', name:'BEP e Governança BIM', sub:'Plano de Execução BIM, papéis, responsabilidades, metas e usos BIM.', match:['bep','governança','responsabilidades','papéis'], direcao:'Atualizar o BEP como documento operacional, conectando papéis, usos BIM, padrões de entrega e rotina real de coordenação.' },
+  { id:'compat', code:'05', name:'Modelo Federado e Compatibilização', sub:'Rotina de federação, clash detection, pendências e resolução de conflitos.', match:['compatibilização','federado','clash','interferência','navisworks'], direcao:'Estabelecer rotina de federação e clash com matriz de prioridade, responsável, prazo e fechamento formal das interferências.' },
+  { id:'comunicacao', code:'06', name:'Comunicação, RFIs e Registros', sub:'Atas, RFIs, decisões, pendências e rastreabilidade da comunicação.', match:['comunicação','rfi','atas','registros'], direcao:'Centralizar decisões e RFIs em fluxo rastreável, evitando tratativas paralelas e perda de histórico técnico.' },
+  { id:'usos', code:'07', name:'Usos BIM e Evolução', sub:'Compatibilização, quantitativos, documentação, 4D, 5D e usos futuros.', match:['usos bim','usos','quantitativos','4d','5d','evolução'], direcao:'Priorizar os usos BIM de maior retorno imediato, conectando modelo federado, documentação, quantitativos e próximos ganhos 4D/5D.' },
+  { id:'desenvolvimento', code:'08', name:'Desenvolvimento dos Projetos', sub:'Fluxo de desenvolvimento, integração entre disciplinas e retrabalhos.', match:['desenvolvimento','projetos','fluxo'], direcao:'Mapear o fluxo AS-IS por disciplina, remover retrabalhos recorrentes e formalizar pontos de controle antes das entregas.' }
+];
+
+let analiseAtual = null;
+let analiseSomenteProblemas = false;
+
+function abrirResultadosAnalise() {
+  abrirTela('screenAnaliseDashboard');
+  gerarResultadosAnalise();
+}
+
+function normalizarTextoAnalise(txt) {
+  return String(txt || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+}
+
+function classificarSeveridadeResposta(texto) {
+  const t = normalizarTextoAnalise(texto);
+  if (!t.trim()) return 'na';
+
+  const crit = [
+    'nao existe','nao tem','nao ha','nao possui','nao conheco','nao sei','inexistente','sem padrao','sem controle','sem dono','fora do padrao','duplicado','duplicados','problema','gargalo','critico','erro','falha','desatualizado','manual','improvisado','nao e utilizado','nao utilizamos','nao temos','nao'
+  ];
+  const warn = [
+    'parcial','as vezes','às vezes','depende','alguns','algumas','pouco','precisa melhorar','em implantacao','em implantação','inconsistente','na pratica nao','dificuldade','ajustar','melhorar','nao totalmente'
+  ];
+  const ok = [
+    'sim','existe','temos','utilizamos','padronizado','definido','conforme','atende','ok','esta claro','está claro','controlado','documentado'
+  ];
+
+  if (crit.some(k => t.includes(k))) return 'crit';
+  if (warn.some(k => t.includes(k))) return 'warn';
+  if (ok.some(k => t.includes(k))) return 'ok';
+
+  return t.length > 12 ? 'warn' : 'na';
+}
+
+function labelSev(sev) {
+  return { ok:'OK', warn:'Atenção', crit:'Crítico', na:'N/A' }[sev] || 'N/A';
+}
+
+function montarAnaliseDasRespostas() {
+  const eixos = ANALISE_EIXOS.map(e => ({ ...e, items:[], ok:0, warn:0, crit:0, na:0, evaluated:0, risk:null }));
+  let total = 0, done = 0, crit = 0, warn = 0;
+
+  adminRows.forEach(row => {
+    const data = row.respostas_json || {};
+    const entrevistado = row.nome || data.identificacao?.nome || 'Entrevistado';
+    const empresa = row.empresa || data.identificacao?.empresa || '';
+    const questionario = data.questionario || [];
+
+    questionario.forEach(block => {
+      const eixoTitulo = normalizarTextoAnalise(block.eixo || '');
+      let eixo = eixos.find(e => e.match.some(m => eixoTitulo.includes(normalizarTextoAnalise(m))));
+      if (!eixo) eixo = eixos[eixos.length - 1];
+
+      (block.respostas || []).forEach(item => {
+        const sev = classificarSeveridadeResposta(item.resposta);
+        eixo.items.push({ entrevistado, empresa, pergunta:item.pergunta || '', resposta:item.resposta || '', sev });
+        eixo[sev]++;
+        total++;
+        if (sev !== 'na') done++;
+        if (sev === 'crit') crit++;
+        if (sev === 'warn') warn++;
+      });
+    });
+
+    const prioridades = data.prioridades || [];
+    prioridades.forEach(pr => {
+      const p = normalizarTextoAnalise(pr);
+      const eixo = eixos.find(e => e.match.some(m => p.includes(normalizarTextoAnalise(m))) || normalizarTextoAnalise(e.name).includes(p));
+      if (eixo) {
+        eixo.items.push({ entrevistado, empresa, pergunta:'Prioridade indicada pelo entrevistado', resposta:pr, sev:'warn' });
+        eixo.warn++;
+        total++;
+        done++;
+        warn++;
+      }
+    });
+  });
+
+  eixos.forEach(e => {
+    e.evaluated = e.ok + e.warn + e.crit;
+    e.risk = e.evaluated ? Math.round(((e.crit * 100) + (e.warn * 55)) / e.evaluated) : null;
+  });
+
+  const overall = done ? Math.round(((crit * 100) + (warn * 55)) / done) : 0;
+  return { eixos, total, done, crit, warn, overall, entrevistados:adminRows.length };
+}
+
+function riscoClasse(risk) {
+  if (risk === null) return '';
+  if (risk >= 70) return 'crit';
+  if (risk >= 35) return 'warn';
+  return '';
+}
+
+function riscoTag(risk) {
+  if (!risk) return 'Aguardando avaliação';
+  if (risk >= 70) return 'Risco alto';
+  if (risk >= 35) return 'Risco moderado';
+  return 'Risco controlado';
+}
+
+function gerarResultadosAnalise() {
+  if (!adminRows.length) {
+    byId('analysisPillars').innerHTML = '<div class="callout">Nenhuma resposta carregada. Volte ao painel, clique em Atualizar e depois abra Resultados e análise.</div>';
+    return;
+  }
+
+  analiseAtual = montarAnaliseDasRespostas();
+  const a = analiseAtual;
+
+  byId('riskIndexNum').textContent = a.overall;
+  byId('riskIndexTag').textContent = riscoTag(a.overall);
+  byId('riskStatDone').textContent = `${a.done}/${a.total}`;
+  byId('riskStatCrit').textContent = a.crit;
+  byId('riskStatWarn').textContent = a.warn;
+  byId('riskStatPeople').textContent = a.entrevistados;
+
+  const ranked = [...a.eixos].sort((x,y) => (y.risk ?? -1) - (x.risk ?? -1));
+  byId('riskRank').innerHTML = ranked.map((e, i) => {
+    const pct = e.risk === null ? 's/ dados' : `${e.risk}%`;
+    const width = e.risk === null ? 0 : e.risk;
+    return `
+      <div class="rank-row">
+        <div class="rank-pos">${i+1}</div>
+        <div class="rank-name">${escapeHtml(e.name)}</div>
+        <div class="risk-track"><div class="risk-fill ${riscoClasse(e.risk)}" style="width:${width}%"></div></div>
+        <div class="rank-pct">${pct}</div>
+      </div>`;
+  }).join('');
+
+  const top = ranked.filter(e => e.risk !== null).slice(0,3);
+  byId('analysisDirections').innerHTML = top.map(e => `
+    <div class="direction-card">
+      <h4>${escapeHtml(e.name)}</h4>
+      <p><strong>Direcionamento:</strong> ${escapeHtml(e.direcao)}</p>
+    </div>
+  `).join('') || '<div class="callout">Ainda não há dados suficientes para gerar direcionamentos.</div>';
+
+  byId('analysisPillars').innerHTML = ranked.map(e => renderPillarAnalise(e)).join('');
+  byId('analysisShell').classList.toggle('analysis-problems-only', analiseSomenteProblemas);
+}
+
+function renderPillarAnalise(e) {
+  const pct = e.risk === null ? 's/ dados' : `${e.risk}%`;
+  const items = e.items.length ? e.items.map(item => `
+    <div class="analysis-item" data-sev="${item.sev}">
+      <div class="sev-stripe"></div>
+      <div>
+        <h4>${escapeHtml(item.pergunta)}</h4>
+        <p><strong>${escapeHtml(item.entrevistado)}</strong>${item.empresa ? ' · ' + escapeHtml(item.empresa) : ''}</p>
+        <p>${escapeHtml(item.resposta || '-').replace(/\n/g,'<br>')}</p>
+      </div>
+      <span class="sev-pill ${item.sev}">${labelSev(item.sev)}</span>
+    </div>
+  `).join('') : '<div class="analysis-item" data-sev="na"><div class="sev-stripe"></div><div><h4>Sem dados neste eixo</h4><p>Nenhuma resposta foi associada automaticamente a este eixo.</p></div><span class="sev-pill na">N/A</span></div>';
+
+  return `
+    <section class="pillar-analysis">
+      <div class="pillar-analysis-head">
+        <div class="pillar-analysis-code">${escapeHtml(e.code)}</div>
+        <div class="pillar-analysis-title">
+          <h3>${escapeHtml(e.name)}</h3>
+          <p>${escapeHtml(e.sub)}</p>
+        </div>
+        <div class="pillar-meta-analysis">
+          <span>${pct}</span>
+          <span>${e.crit} crít.</span>
+          <span>${e.warn} aten.</span>
+        </div>
+      </div>
+      <div class="pillar-analysis-body">${items}</div>
+    </section>
+  `;
+}
+
+function toggleSomenteProblemas() {
+  analiseSomenteProblemas = !analiseSomenteProblemas;
+  byId('analysisShell').classList.toggle('analysis-problems-only', analiseSomenteProblemas);
+  byId('btnSomenteProblemas').textContent = analiseSomenteProblemas ? 'Mostrar tudo' : '▣ Só problemas';
+}
+
+function copiarResumoAnalise() {
+  if (!analiseAtual) gerarResultadosAnalise();
+  if (!analiseAtual) return;
+  const a = analiseAtual;
+  const ranked = [...a.eixos].sort((x,y) => (y.risk ?? -1) - (x.risk ?? -1));
+  let out = `Diagnóstico de Governança BIM — TIC TRENS\n`;
+  out += `Índice de risco: ${a.overall}/100 (${riscoTag(a.overall)})\n`;
+  out += `Entrevistados: ${a.entrevistados}\nItens avaliados: ${a.done}/${a.total}\nCríticos: ${a.crit}\nAtenção: ${a.warn}\n\n`;
+  out += `Ranking por eixo:\n`;
+  ranked.forEach((e,i) => {
+    out += `${i+1}. ${e.name}: ${e.risk === null ? 's/ dados' : e.risk + '%'} — ${e.crit} críticos, ${e.warn} atenção\n`;
+  });
+  out += `\nDirecionamentos principais:\n`;
+  ranked.filter(e => e.risk !== null).slice(0,3).forEach(e => {
+    out += `- ${e.name}: ${e.direcao}\n`;
+  });
+  navigator.clipboard?.writeText(out).then(() => alert('Resumo copiado.'));
 }
 
 function exportarCSV() {

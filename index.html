@@ -1391,15 +1391,15 @@
       <div class="divider"></div>
 
       <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:8px;">
-        📧 Destinatário configurado: <strong style="color:var(--text)">patricia@csbim.eng.br</strong>
+        📧 Envio configurado para: <strong style="color:var(--text)">patricia@csbim.eng.br</strong><br>📋 Cópia para: <strong style="color:var(--text)">marassi.gabriel@csbim.eng.br / osvaldo@csbim.eng.br / marcus@csbim.eng.br</strong>
       </p>
       <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px;">
         Observação: por segurança, navegadores não permitem anexar automaticamente um arquivo via HTML puro. O botão abaixo baixa o Word e abre o e-mail preenchido para que o arquivo seja anexado antes do envio.
       </p>
 
-      <button class="btn btn-combo" onclick="downloadAndEmail()">⬇️ Baixar Word + abrir e-mail para Patrícia</button>
+      <button class="btn btn-combo" onclick="downloadAndEmail()">⬇️ Baixar Word + abrir e-mail para equipe</button>
       <button class="btn btn-download" onclick="downloadReport()">⬇️ Baixar Relatório Word (.doc)</button>
-      <button class="btn btn-email" onclick="emailToPatricia()">✉️ Abrir e-mail para Patrícia</button>
+      <button class="btn btn-email" onclick="emailToPatricia()">✉️ Abrir e-mail para equipe</button>
 
       <div class="btn-row" style="margin-top:20px;">
         <button class="btn btn-ghost" onclick="goTo(4)">← Revisar Respostas</button>
@@ -2478,8 +2478,11 @@ function emailToPatricia() {
   const data = collectData();
   const assunto = 'Questionário de Diagnóstico BIM — TIC TRENS — ' + (data.identificacao.nome || 'Entrevistado');
   const corpo = plainTextReport(data) + '\n\nObservação: anexar o arquivo Word gerado pelo botão de download antes de enviar.';
-  const mailto = 'mailto:patricia@csbim.eng.br'
-    + '?subject=' + encodeURIComponent(assunto)
+  const emailPrincipal = 'patricia@csbim.eng.br';
+  const emailCopia = 'marassi.gabriel@csbim.eng.br,osvaldo@csbim.eng.br,marcus@csbim.eng.br';
+  const mailto = 'mailto:' + encodeURIComponent(emailPrincipal)
+    + '?cc=' + encodeURIComponent(emailCopia)
+    + '&subject=' + encodeURIComponent(assunto)
     + '&body=' + encodeURIComponent(corpo);
   window.location.href = mailto;
 }

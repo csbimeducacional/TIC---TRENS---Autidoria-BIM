@@ -507,6 +507,45 @@
     color:var(--muted);
     margin-top:6px;
   }
+  .diag-options {
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .diag-option-key {
+    width:24px;
+    height:24px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,180,216,.08);
+    border:1px solid rgba(0,180,216,.24);
+    color:var(--accent);
+    font-weight:800;
+    flex-shrink:0;
+  }
+  .diag-option-text {
+    line-height:1.45;
+  }
+  .diag-observacao {
+    width:100%;
+    padding:12px 16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    min-height:64px;
+    resize:vertical;
+    outline:none;
+  }
+  .diag-observacao:focus {
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(0,180,216,.12);
+  }
 
   .upload-area {
     border:2px dashed var(--border);
@@ -1304,7 +1343,7 @@
       <div class="hero-card">
         <div class="section-label">Etapa 4 de 5</div>
         <h2 class="section-title">Questionário de Diagnóstico BIM</h2>
-        <p class="section-desc">Responda por eixo de análise. As perguntas foram estruturadas para alimentar o mapeamento AS-IS, a identificação de gargalos e a avaliação de maturidade BIM.</p>
+        <p class="section-desc">Responda as perguntas-chave por alternativas. As opções alimentam automaticamente o índice de risco, o ranking de problemas e os direcionamentos do dashboard.</p>
       </div>
 
       <div id="q-container"></div>
@@ -1484,7 +1523,8 @@ const supabaseClient = (SUPABASE_URL.startsWith('http') && SUPABASE_KEY.startsWi
   ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
   : null;
 
-const QUESTIONS = [{"id": "desenvolvimento", "badge": "EIXO 01", "title": "Desenvolvimento dos Projetos", "items": ["Como os projetos são desenvolvidos atualmente, do conceito à entrega final?", "Existe um fluxo formal para criação, revisão, aprovação e publicação dos modelos?", "Quais softwares você utiliza no dia a dia? Ex.: Civil 3D, Revit, Navisworks, ACC, BIM Collaborate.", "Qual o seu nível de domínio nas ferramentas utilizadas?", "Em quais etapas do projeto o BIM é utilizado de forma efetiva?", "Quais pontos do fluxo atual mais geram retrabalho?"]}, {"id": "cde", "badge": "EIXO 02", "title": "ACC, CDE e Estrutura de Pastas", "items": ["A Autodesk ACC é utilizada apenas como repositório ou também como ambiente de gestão, revisão e comunicação?", "A estrutura de pastas reflete estados de informação como WIP, Compartilhado, Publicado e Arquivado?", "O trabalho em progresso fica isolado por equipe/disciplina antes de ser compartilhado?", "Como é feito o controle de versionamento dos arquivos e modelos?", "Existem gates de aprovação para mover informações entre estados/pastas?", "As permissões de acesso são coerentes com cada etapa do fluxo?"]}, {"id": "bep", "badge": "EIXO 03", "title": "BEP e Governança BIM", "items": ["Existe um Plano de Execução BIM vigente e acessível à equipe?", "O BEP define papéis, responsabilidades, matriz de responsabilidades e organograma BIM?", "Os usos BIM, metas e entregas estão claramente documentados?", "O BEP é utilizado na prática ou funciona apenas como documento de referência?", "O documento é atualizado conforme o projeto evolui?", "Quais pontos de governança hoje são mais difíceis de cumprir?"]}, {"id": "matriz", "badge": "EIXO 04", "title": "Matriz de Informação — LOD / LOI", "items": ["Existe uma matriz de informação vigente, versionada e acessível?", "A matriz cobre todas as disciplinas e fases do projeto?", "LOD e LOI são tratados de forma separada e objetiva?", "Está definido quem é responsável por entregar cada informação/elemento?", "O que está modelado corresponde ao LOD/LOI acordado?", "A matriz está alinhada aos requisitos de informação do contratante?"]}, {"id": "arquivos", "badge": "EIXO 05", "title": "Arquivos, Padrões e Templates", "items": ["A nomenclatura dos arquivos segue uma convenção única e consistente?", "Como é feito o controle de revisão, status e adequação dos arquivos?", "Existem arquivos duplicados, paralelos, sem dono ou fora do ambiente oficial?", "Quais formatos são entregues em cada fase? Ex.: nativo, IFC, PDF, NWC.", "Os modelos passam por purge, audit, verificação de vínculos e coordenadas?", "Existem templates e padrões oficiais para Revit, Civil 3D, CAD e demais ferramentas?"]}, {"id": "compat", "badge": "EIXO 06", "title": "Modelo Federado e Compatibilização", "items": ["Existe modelo federado atualizado e com rotina definida de publicação?", "Em quais ferramentas os modelos são compatibilizados?", "Existe matriz de interferências ou classificação por prioridade?", "Como os conflitos detectados são distribuídos, acompanhados e encerrados?", "Quais disciplinas apresentam maior recorrência de interferências?", "Há histórico de relatórios de clash detection para análise dos conflitos recorrentes?"]}, {"id": "comunicacao", "badge": "EIXO 07", "title": "Comunicação, RFIs e Registros", "items": ["Como é feita a comunicação entre empresas, projetistas e coordenação?", "Quais canais são utilizados? Ex.: reuniões, RFIs, e-mail, ACC, Teams.", "Com que frequência ocorrem as reuniões de coordenação BIM?", "As decisões de projeto são registradas formalmente?", "Há dificuldade em localizar decisões, pendências ou justificativas antigas?", "Como dúvidas técnicas são abertas, respondidas e encerradas?"]}, {"id": "usos", "badge": "EIXO 08", "title": "Usos BIM e Oportunidades de Evolução", "items": ["Quais usos BIM são aplicados hoje? Ex.: 3D, compatibilização, quantitativos, 4D, 5D.", "Há extração de quantitativos ou documentação diretamente dos modelos?", "Os modelos são utilizados para planejamento, orçamento ou controle de obra?", "Quais usos BIM a equipe considera prioritários para evoluir?", "Quais boas práticas atuais devem ser mantidas?", "Quais melhorias teriam maior impacto na próxima etapa da consultoria?"]}];
+const QUESTIONS = [{"id": "arquivos", "badge": "EIXO 01", "title": "Arquivos e Organização", "items": ["A nomenclatura dos arquivos segue um padrão único e consistente?", "O versionamento dos arquivos é controlado de forma clara?", "Os arquivos possuem status de adequação ou aprovação?"]}, {"id": "cde", "badge": "EIXO 02", "title": "CDE / ACC / Estrutura de Pastas", "items": ["A estrutura de pastas no CDE/ACC está organizada por estados de informação?", "As permissões de acesso estão coerentes com as responsabilidades da equipe?", "Existe fluxo definido para mover arquivos entre desenvolvimento, compartilhamento e publicação?"]}, {"id": "bep", "badge": "EIXO 03", "title": "BEP e Governança BIM", "items": ["Existe um BEP / Plano de Execução BIM vigente?", "Os papéis e responsabilidades BIM estão claramente definidos?", "Os usos BIM do projeto estão definidos e documentados?"]}, {"id": "matriz", "badge": "EIXO 04", "title": "Matriz de Informação / LOD / LOI", "items": ["Existe matriz de informação definida para o projeto?", "O nível de desenvolvimento geométrico e informacional está claro por fase?", "O que está modelado corresponde ao LOD/LOI esperado?"]}, {"id": "compat", "badge": "EIXO 05", "title": "Compatibilização e Clash Detection", "items": ["Existe rotina de compatibilização BIM definida?", "Os conflitos encontrados são registrados e acompanhados até a resolução?", "Existe histórico de interferências por disciplina?"]}, {"id": "qualidade", "badge": "EIXO 06", "title": "Qualidade dos Modelos", "items": ["Os modelos passam por verificação de qualidade antes do compartilhamento?", "Existem padrões de modelagem e templates oficiais?", "Os modelos possuem informações suficientes para os usos BIM previstos?"]}, {"id": "comunicacao", "badge": "EIXO 07", "title": "Comunicação e Aprovação", "items": ["As decisões de projeto são registradas formalmente?", "Existe fluxo claro para dúvidas técnicas e RFIs?", "As reuniões de coordenação BIM possuem frequência e pauta definidas?"]}, {"id": "usos", "badge": "EIXO 08", "title": "Usos BIM e Evolução", "items": ["O BIM é utilizado para extração de quantitativos ou documentação?", "O BIM é utilizado para planejamento 4D ou orçamento 5D?", "A equipe possui capacitação suficiente para executar os usos BIM previstos?"]}];
+const DIAG_OPTIONS = [{"key": "A", "label": "Sim, existe, está documentado e é aplicado pela equipe", "score": 0, "sev": "ok"}, {"key": "B", "label": "Existe, mas é aplicado parcialmente ou sem padronização", "score": 2, "sev": "warn"}, {"key": "C", "label": "Não existe ou não é utilizado na prática", "score": 4, "sev": "crit"}, {"key": "D", "label": "Não sei informar", "score": 1, "sev": "warn"}, {"key": "E", "label": "Não se aplica", "score": null, "sev": "na"}];
 const respostasEscala = {};
 
 function byId(id) { return document.getElementById(id); }
@@ -1527,14 +1567,28 @@ function renderQuestions() {
         <span class="q-block-badge">${block.badge}</span>
         <span class="q-block-title">${block.title}</span>
       </div>
-      ${block.items.map((q, qi) => `
-        <div class="q-item">
-          <div class="q-label"><em>${qi + 1}.</em>${q}</div>
-          <textarea id="${block.id}_${qi}" data-question="${escapeAttr(q)}" placeholder="Digite sua resposta..." style="width:100%;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:78px;resize:vertical;outline:none;"></textarea>
-        </div>
-      `).join('')}
+      ${block.items.map((q, qi) => {
+        const name = `${block.id}_${qi}_opt`;
+        return `
+          <div class="q-item">
+            <div class="q-label"><em>${qi + 1}.</em>${q}</div>
+            <div class="diag-options">
+              ${DIAG_OPTIONS.map(opt => `
+                <label class="radio-item">
+                  <input type="radio" name="${name}" value="${opt.key}">
+                  <span class="radio-dot"></span>
+                  <span class="diag-option-key">${opt.key}</span>
+                  <span class="diag-option-text">${opt.label}</span>
+                </label>
+              `).join('')}
+            </div>
+            <textarea id="${block.id}_${qi}_obs" class="diag-observacao" data-question="${escapeAttr(q)}" placeholder="Observação opcional: detalhe exemplos, dificuldades ou contexto da resposta..."></textarea>
+          </div>
+        `;
+      }).join('')}
     </div>
   `).join('');
+  initSelectable();
 }
 
 function escapeAttr(str) {
@@ -1783,7 +1837,7 @@ function abrirRespostaAdmin(id) {
   questionario.forEach(block => {
     html += `<div class="answer-block"><h4>${escapeHtml(block.eixo || 'Eixo')}</h4>`;
     (block.respostas || []).forEach((item, idx) => {
-      html += `<p><strong>${idx + 1}. ${escapeHtml(item.pergunta || '')}</strong><br>${escapeHtml(item.resposta || '-').replace(/\n/g,'<br>')}</p>`;
+      html += `<p><strong>${idx + 1}. ${escapeHtml(item.pergunta || '')}</strong><br>${escapeHtml((item.alternativa ? 'Alternativa ' + item.alternativa + ': ' : '') + (item.resposta || '-')).replace(/\n/g,'<br>')}${item.observacao ? '<br><em>Observação:</em> ' + escapeHtml(item.observacao).replace(/\n/g,'<br>') : ''}</p>`;
     });
     html += `</div>`;
   });
@@ -1940,8 +1994,8 @@ function labelSev(sev) {
 }
 
 function montarAnaliseDasRespostas() {
-  const eixos = ANALISE_EIXOS.map(e => ({ ...e, items:[], ok:0, warn:0, crit:0, na:0, evaluated:0, risk:null }));
-  let total = 0, done = 0, crit = 0, warn = 0;
+  const eixos = ANALISE_EIXOS.map(e => ({ ...e, items:[], ok:0, warn:0, crit:0, na:0, evaluated:0, scoreSum:0, scoreMax:0, risk:null }));
+  let total = 0, done = 0, crit = 0, warn = 0, scoreSum = 0, scoreMax = 0;
 
   adminRows.forEach(row => {
     const data = row.respostas_json || {};
@@ -1955,11 +2009,24 @@ function montarAnaliseDasRespostas() {
       if (!eixo) eixo = eixos[eixos.length - 1];
 
       (block.respostas || []).forEach(item => {
-        const sev = classificarSeveridadeResposta(item.resposta);
-        eixo.items.push({ entrevistado, empresa, pergunta:item.pergunta || '', resposta:item.resposta || '', sev });
-        eixo[sev]++;
+        const score = item.score;
+        const sev = item.sev || (score === 4 ? 'crit' : score === 2 || score === 1 ? 'warn' : score === 0 ? 'ok' : classificarSeveridadeResposta(item.resposta || item.observacao));
+        const respostaTexto = [
+          item.alternativa ? `Alternativa ${item.alternativa}: ${item.resposta || ''}` : (item.resposta || ''),
+          item.observacao ? `Observação: ${item.observacao}` : ''
+        ].filter(Boolean).join('\\n');
+
+        eixo.items.push({ entrevistado, empresa, pergunta:item.pergunta || '', resposta:respostaTexto, sev, score });
+        eixo[sev] = (eixo[sev] || 0) + 1;
         total++;
-        if (sev !== 'na') done++;
+        if (score !== null && score !== undefined) {
+          done++;
+          eixo.evaluated++;
+          eixo.scoreSum += Number(score || 0);
+          eixo.scoreMax += 4;
+          scoreSum += Number(score || 0);
+          scoreMax += 4;
+        }
         if (sev === 'crit') crit++;
         if (sev === 'warn') warn++;
       });
@@ -1970,21 +2037,25 @@ function montarAnaliseDasRespostas() {
       const p = normalizarTextoAnalise(pr);
       const eixo = eixos.find(e => e.match.some(m => p.includes(normalizarTextoAnalise(m))) || normalizarTextoAnalise(e.name).includes(p));
       if (eixo) {
-        eixo.items.push({ entrevistado, empresa, pergunta:'Prioridade indicada pelo entrevistado', resposta:pr, sev:'warn' });
+        eixo.items.push({ entrevistado, empresa, pergunta:'Prioridade indicada pelo entrevistado', resposta:pr, sev:'warn', score:2 });
         eixo.warn++;
         total++;
         done++;
         warn++;
+        eixo.evaluated++;
+        eixo.scoreSum += 2;
+        eixo.scoreMax += 4;
+        scoreSum += 2;
+        scoreMax += 4;
       }
     });
   });
 
   eixos.forEach(e => {
-    e.evaluated = e.ok + e.warn + e.crit;
-    e.risk = e.evaluated ? Math.round(((e.crit * 100) + (e.warn * 55)) / e.evaluated) : null;
+    e.risk = e.scoreMax ? Math.round((e.scoreSum / e.scoreMax) * 100) : null;
   });
 
-  const overall = done ? Math.round(((crit * 100) + (warn * 55)) / done) : 0;
+  const overall = scoreMax ? Math.round((scoreSum / scoreMax) * 100) : 0;
   return { eixos, total, done, crit, warn, overall, entrevistados:adminRows.length };
 }
 
@@ -2238,8 +2309,17 @@ function collectData() {
 
   QUESTIONS.forEach(block => {
     const respostas = block.items.map((q, qi) => {
-      const el = byId(`${block.id}_${qi}`);
-      return { pergunta:q, resposta: el ? el.value.trim() : '' };
+      const selected = document.querySelector(`input[name="${block.id}_${qi}_opt"]:checked`);
+      const opt = selected ? DIAG_OPTIONS.find(o => o.key === selected.value) : null;
+      const obs = byId(`${block.id}_${qi}_obs`)?.value.trim() || '';
+      return {
+        pergunta:q,
+        alternativa: opt ? opt.key : '',
+        resposta: opt ? opt.label : '',
+        score: opt ? opt.score : null,
+        sev: opt ? opt.sev : 'na',
+        observacao: obs
+      };
     });
     data.questionario.push({ eixo:block.title, respostas });
   });
@@ -2284,7 +2364,9 @@ function plainTextReport(data) {
     txt += block.eixo.toUpperCase() + '\n';
     block.respostas.forEach((item, idx) => {
       txt += (idx + 1) + '. ' + item.pergunta + '\n';
-      txt += 'Resposta: ' + (item.resposta || '-') + '\n\n';
+      txt += 'Resposta: ' + ((item.alternativa ? 'Alternativa ' + item.alternativa + ': ' : '') + (item.resposta || '-')) + '\n';
+      if (item.observacao) txt += 'Observação: ' + item.observacao + '\n';
+      txt += '\n';
     });
     txt += line + '\n\n';
   });
@@ -2350,7 +2432,7 @@ function reportHtml(data) {
   data.questionario.forEach(block => {
     body += `<h2>${escapeHtml(block.eixo)}</h2>`;
     block.respostas.forEach((item, idx) => {
-      body += `<p><strong>${idx+1}. ${escapeHtml(item.pergunta)}</strong><br/>${escapeHtml(item.resposta || '-').replace(/\n/g,'<br/>')}</p>`;
+      body += `<p><strong>${idx+1}. ${escapeHtml(item.pergunta)}</strong><br/>${escapeHtml((item.alternativa ? 'Alternativa ' + item.alternativa + ': ' : '') + (item.resposta || '-')).replace(/\n/g,'<br/>')}${item.observacao ? '<br/><em>Observação:</em> ' + escapeHtml(item.observacao).replace(/\n/g,'<br/>') : ''}</p>`;
     });
   });
 

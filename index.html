@@ -1328,7 +1328,7 @@
           <input type="file" id="arquivoRef" onchange="setFileName(this)"/>
           <div class="upload-icon">📎</div>
           <strong>Selecionar arquivo</strong>
-          <p>BEP, matriz, relatório de clash ou documento de apoio.</p>
+          <p>BEP, matriz, relatório de clash ou documento de apoio. O arquivo será enviado ao Supabase e ficará disponível para download na Área CSBIM.</p>
           <div class="file-name" id="fileName"></div>
         </label>
       </div>
@@ -1522,6 +1522,7 @@ const SUPABASE_KEY = 'sb_publishable_RuBR6Bn97nNHWv70U32Xww_f02V7WfX';
 const supabaseClient = (SUPABASE_URL.startsWith('http') && SUPABASE_KEY.startsWith('sb_'))
   ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
   : null;
+const STORAGE_BUCKET_ANEXOS = 'questionario-anexos';
 
 const QUESTIONS = [{"id": "arquivos", "badge": "EIXO 01", "title": "Arquivos e Organização", "items": ["A nomenclatura dos arquivos segue um padrão único e consistente?", "O versionamento dos arquivos é controlado de forma clara?", "Os arquivos possuem status de adequação ou aprovação?"]}, {"id": "cde", "badge": "EIXO 02", "title": "CDE / ACC / Estrutura de Pastas", "items": ["A estrutura de pastas no CDE/ACC está organizada por estados de informação?", "As permissões de acesso estão coerentes com as responsabilidades da equipe?", "Existe fluxo definido para mover arquivos entre desenvolvimento, compartilhamento e publicação?"]}, {"id": "bep", "badge": "EIXO 03", "title": "BEP e Governança BIM", "items": ["Existe um BEP / Plano de Execução BIM vigente?", "Os papéis e responsabilidades BIM estão claramente definidos?", "Os usos BIM do projeto estão definidos e documentados?"]}, {"id": "matriz", "badge": "EIXO 04", "title": "Matriz de Informação / LOD / LOI", "items": ["Existe matriz de informação definida para o projeto?", "O nível de desenvolvimento geométrico e informacional está claro por fase?", "O que está modelado corresponde ao LOD/LOI esperado?"]}, {"id": "compat", "badge": "EIXO 05", "title": "Compatibilização e Clash Detection", "items": ["Existe rotina de compatibilização BIM definida?", "Os conflitos encontrados são registrados e acompanhados até a resolução?", "Existe histórico de interferências por disciplina?"]}, {"id": "qualidade", "badge": "EIXO 06", "title": "Qualidade dos Modelos", "items": ["Os modelos passam por verificação de qualidade antes do compartilhamento?", "Existem padrões de modelagem e templates oficiais?", "Os modelos possuem informações suficientes para os usos BIM previstos?"]}, {"id": "comunicacao", "badge": "EIXO 07", "title": "Comunicação e Aprovação", "items": ["As decisões de projeto são registradas formalmente?", "Existe fluxo claro para dúvidas técnicas e RFIs?", "As reuniões de coordenação BIM possuem frequência e pauta definidas?"]}, {"id": "usos", "badge": "EIXO 08", "title": "Usos BIM e Evolução", "items": ["O BIM é utilizado para extração de quantitativos ou documentação?", "O BIM é utilizado para planejamento 4D ou orçamento 5D?", "A equipe possui capacitação suficiente para executar os usos BIM previstos?"]}];
 const DIAG_OPTIONS = [{"key": "A", "label": "Sim, existe, está documentado e é aplicado pela equipe", "score": 0, "sev": "ok"}, {"key": "B", "label": "Existe, mas é aplicado parcialmente ou sem padronização", "score": 2, "sev": "warn"}, {"key": "C", "label": "Não existe ou não é utilizado na prática", "score": 4, "sev": "crit"}, {"key": "D", "label": "Não sei informar", "score": 1, "sev": "warn"}, {"key": "E", "label": "Não se aplica", "score": null, "sev": "na"}];
@@ -1611,6 +1612,50 @@ function openAdminLogin() {
   abrirTela('screenAdminLogin');
 }
 
+
+function nomeArquivoSeguro(nome) {
+  return String(nome || 'arquivo')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-zA-Z0-9._-]+/g,'_')
+    .replace(/^_+|_+$/g,'') || 'arquivo';
+}
+
+async function uploadAnexoQuestionario(nomeEntrevistado) {
+  const input = byId('arquivoRef');
+  const file = input?.files?.[0];
+  if (!file) return null;
+
+  if (!supabaseConfigurado()) {
+    throw new Error('Supabase não configurado para upload de anexos.');
+  }
+
+  const safePessoa = nomeArquivoSeguro(nomeEntrevistado || 'entrevistado');
+  const safeFile = nomeArquivoSeguro(file.name);
+  const path = `tic-trens/${safePessoa}/${Date.now()}_${safeFile}`;
+
+  const { data, error } = await supabaseClient.storage
+    .from(STORAGE_BUCKET_ANEXOS)
+    .upload(path, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type || 'application/octet-stream'
+    });
+
+  if (error) {
+    console.error(error);
+    throw new Error('Erro ao enviar anexo: ' + (error.message || 'erro desconhecido'));
+  }
+
+  return {
+    bucket: STORAGE_BUCKET_ANEXOS,
+    path: data.path,
+    nome: file.name,
+    tipo: file.type || '',
+    tamanho: file.size,
+    uploaded_at: new Date().toISOString()
+  };
+}
+
 async function salvarNoBanco() {
   if (!supabaseConfigurado()) {
     alert('Supabase ainda não está configurado. Abra o index.html e preencha a SUPABASE_URL com a Project URL do Supabase. A publishable key já está configurada.');
@@ -1618,6 +1663,17 @@ async function salvarNoBanco() {
   }
 
   const data = collectData();
+
+  try {
+    const anexo = await uploadAnexoQuestionario(data.identificacao.nome);
+    if (anexo) {
+      data.documentos.anexo = anexo;
+      data.documentos.arquivoRef = anexo.nome;
+    }
+  } catch (uploadError) {
+    alert(uploadError.message);
+    return false;
+  }
 
   const payload = {
     projeto: 'TIC TRENS',
@@ -1832,6 +1888,22 @@ function abrirRespostaAdmin(id) {
       <p><strong>Documentos:</strong> ${escapeHtml((data.documentos?.docs || []).join(', ') || '-')}</p>
       <p><strong>Prioridades:</strong> ${escapeHtml((data.prioridades || []).join(', ') || '-')}</p>
     </div>
+
+    ${data.documentos?.anexo ? `
+      <div class="answer-block">
+        <h4>Anexo enviado</h4>
+        <p><strong>Arquivo:</strong> ${escapeHtml(data.documentos.anexo.nome || data.documentos.arquivoRef || '-')}</p>
+        <p><strong>Caminho no Storage:</strong> ${escapeHtml(data.documentos.anexo.path || '-')}</p>
+        <div class="btn-row" style="margin-top:10px;">
+          <button class="btn btn-primary" onclick="baixarAnexoAdmin('${encodeURIComponent(data.documentos.anexo.path || '')}')">Baixar anexo</button>
+        </div>
+      </div>
+    ` : `
+      <div class="answer-block">
+        <h4>Anexo enviado</h4>
+        <p>Nenhum anexo foi carregado neste questionário.</p>
+      </div>
+    `}
   `;
 
   questionario.forEach(block => {
@@ -1919,6 +1991,27 @@ async function excluirRespostaAdmin(id) {
     byId('adminDetalhe').style.display = 'none';
   }
   await carregarRespostas();
+}
+
+
+async function baixarAnexoAdmin(encodedPath) {
+  if (!supabaseConfigurado()) {
+    alert('Supabase ainda não configurado no HTML.');
+    return;
+  }
+
+  const path = decodeURIComponent(encodedPath);
+  const { data, error } = await supabaseClient.storage
+    .from(STORAGE_BUCKET_ANEXOS)
+    .createSignedUrl(path, 60 * 60);
+
+  if (error) {
+    console.error(error);
+    alert('Erro ao gerar link de download do anexo. Verifique as policies do Storage. Detalhe: ' + (error.message || 'erro desconhecido'));
+    return;
+  }
+
+  window.open(data.signedUrl, '_blank');
 }
 
 function baixarWordAdmin(id) {
@@ -2358,6 +2451,9 @@ function plainTextReport(data) {
   txt += '3. MATERIAIS E DOCUMENTOS DISPONÍVEIS\n';
   txt += 'Documentos selecionados: ' + (data.documentos.docs.join(', ') || '-') + '\n';
   txt += 'Arquivo de referência: ' + (data.documentos.arquivoRef || '-') + '\n';
+  if (data.documentos.anexo) {
+    txt += 'Anexo no Storage: ' + (data.documentos.anexo.path || '-') + '\n';
+  }
   txt += 'Observações: ' + (data.documentos.docsObs || '-') + '\n\n';
 
   data.questionario.forEach(block => {
@@ -2425,6 +2521,7 @@ function reportHtml(data) {
     ${section('3. Materiais e Documentos Disponíveis', `
       <p><strong>Documentos selecionados:</strong></p>${list(data.documentos.docs)}
       <p><strong>Arquivo de referência:</strong> ${escapeHtml(data.documentos.arquivoRef || '-')}</p>
+      ${data.documentos.anexo ? `<p><strong>Anexo no Storage:</strong> ${escapeHtml(data.documentos.anexo.path || '-')}</p>` : ''}
       <p><strong>Observações:</strong><br/>${escapeHtml(data.documentos.docsObs).replace(/\n/g,'<br/>')}</p>
     `)}
   `;

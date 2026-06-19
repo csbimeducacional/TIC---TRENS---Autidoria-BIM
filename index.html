@@ -603,6 +603,16 @@
     border-color:var(--muted);
     color:var(--text);
   }
+  .btn-danger {
+    background:transparent;
+    color:#ff8a84;
+    border:1px solid rgba(248,81,73,.35);
+  }
+  .btn-danger:hover {
+    border-color:#f85149;
+    color:#fff;
+    background:rgba(248,81,73,.14);
+  }
   .btn-download {
     background:#238636;
     color:#fff;
@@ -1384,6 +1394,7 @@ function renderAdminDashboard() {
         <div class="btn-row" style="margin-top:14px;">
           <button class="btn btn-primary" onclick="abrirRespostaAdmin('${row.id}')">Ver respostas</button>
           <button class="btn btn-ghost" onclick="baixarWordAdmin('${row.id}')">Word</button>
+          <button class="btn btn-danger" onclick="excluirRespostaAdmin('${row.id}')">Excluir</button>
         </div>
       </div>
     `;
@@ -1433,6 +1444,7 @@ function abrirRespostaAdmin(id) {
     <div class="btn-row" style="margin-top:10px;">
       <button class="btn btn-primary" onclick="salvarAnaliseAdmin()">Salvar análise</button>
       <button class="btn btn-ghost" onclick="baixarWordAdmin('${row.id}')">Baixar Word</button>
+      <button class="btn btn-danger" onclick="excluirRespostaAdmin('${row.id}')">Excluir resposta</button>
       <button class="btn btn-ghost" onclick="byId('adminDetalhe').style.display='none'">Fechar</button>
     </div>
 
@@ -1493,6 +1505,43 @@ async function salvarAnaliseAdmin() {
 
   alert('Análise salva com sucesso.');
   byId('adminDetalhe').style.display = 'none';
+  await carregarRespostas();
+}
+
+
+async function excluirRespostaAdmin(id) {
+  const row = adminRows.find(r => r.id === id);
+  if (!row) {
+    alert('Resposta não encontrada no painel. Clique em Atualizar e tente novamente.');
+    return;
+  }
+
+  const r = getRowData(row);
+  const nome = r.nome || 'este entrevistado';
+  const ok = confirm(`Tem certeza que deseja excluir definitivamente a resposta de ${nome}?\n\nEssa ação remove o registro do banco Supabase e não pode ser desfeita.`);
+  if (!ok) return;
+
+  if (!supabaseConfigurado()) {
+    alert('Supabase ainda não configurado no HTML.');
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from('respostas_questionario')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error(error);
+    alert('Erro ao excluir a resposta. Verifique a policy DELETE no Supabase. Detalhe: ' + (error.message || 'erro desconhecido'));
+    return;
+  }
+
+  alert('Resposta excluída com sucesso.');
+  if (adminRowSelecionada && adminRowSelecionada.id === id) {
+    adminRowSelecionada = null;
+    byId('adminDetalhe').style.display = 'none';
+  }
   await carregarRespostas();
 }
 
